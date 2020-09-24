@@ -18,7 +18,7 @@ def new_mall_data():
     write it to a csv file, and returns the df.
     '''
     sql_query = 'Select * from customers'
-    df = pd_read_sql(sql_query, get_connection('mall_customers'))
+    df = pd.read_sql(sql_query, get_connection('mall_customers'))
     df.to_csv('mall_customers_df.csv')
     return df
 
@@ -71,3 +71,17 @@ join payment_types as pt on pt.payment_type_id = c.payment_type_id
 def telco_cust1():
     df1 = pd.read_sql(get_connection('telco_churn'))
     return df1 
+
+####### Regression Exercises Acquire ########
+def wrangle_telco():
+    sql_query = '''
+    select * from customers as c
+join internet_service_types as ist on ist.internet_service_type_id = c.internet_service_type_id
+join contract_types as cs on cs.contract_type_id = c.contract_type_id
+join payment_types as pt on pt.payment_type_id = c.payment_type_id
+where contract_type = 'Two year'
+    '''
+    df = pd.read_sql(sql_query, get_connection('telco_churn'))
+    df = df.drop(columns=['internet_service_type_id','contract_type_id', 'payment_type_id', 'gender','senior_citizen', 'partner','dependents','phone_service','multiple_lines','online_security','online_backup','device_protection', 'tech_support','streaming_tv','streaming_movies','paperless_billing','churn', 'internet_service_type','contract_type','payment_type'])
+    return df 
+
