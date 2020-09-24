@@ -83,5 +83,7 @@ where contract_type = 'Two year'
     '''
     df = pd.read_sql(sql_query, get_connection('telco_churn'))
     df = df.drop(columns=['internet_service_type_id','contract_type_id', 'payment_type_id', 'gender','senior_citizen', 'partner','dependents','phone_service','multiple_lines','online_security','online_backup','device_protection', 'tech_support','streaming_tv','streaming_movies','paperless_billing','churn', 'internet_service_type','contract_type','payment_type'])
+    df.total_charges = df.total_charges.str.replace(' ', '0').astype(float)
     return df 
+
 
