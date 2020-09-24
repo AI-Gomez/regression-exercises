@@ -68,3 +68,12 @@ def prep_titanic(df):
     train, validate, test = impute(train, validate, test, 'median', ['age'])
 
     return train, validate, test
+
+##### regression prepare #####
+def prep_mall_data(df):
+    #takes the acquired mall data, does data prep, and returns
+    #train, test, and validate data splits
+    df['is_female']=(df.gender=='Female').astype('int')
+    train_and_validate, test = train_test_split(df, test_size=.15, random_state=123)
+    train, validate = train_test_split(train_and_validate, test_size=.15, random_state=123)
+    return train,test,validate

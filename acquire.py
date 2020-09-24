@@ -75,6 +75,15 @@ def telco_cust1():
 ####### Regression Exercises Acquire ########
 def wrangle_telco():
     sql_query = '''
+    select customer_id, monthly_charges, tenure, total_charges from customers where contract_type_id = '3'
+    '''
+    df = pd.read_sql(sql_query, get_connection('telco_churn'))
+    df.total_charges = df.total_charges.str.replace(' ', '0').astype(float)
+    return df 
+
+
+def wrangle_telco_long():
+    sql_query = '''
     select * from customers as c
 join internet_service_types as ist on ist.internet_service_type_id = c.internet_service_type_id
 join contract_types as cs on cs.contract_type_id = c.contract_type_id
