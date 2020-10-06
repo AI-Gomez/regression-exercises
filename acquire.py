@@ -12,6 +12,22 @@ def get_connection(db, user=user, host=host, password=password):
 def get_connection(db, user=user, host=host, password=password):
     return f'mysql+pymysql://{user}:{password}@{host}/{db}'
 
+def zillow_data():
+    '''
+    this function reads the mall customer data from the codeup db into a df,
+    write it to a csv file, and returns the df.
+    '''
+    sql_query = '''
+    Select * from properties_2017
+join predictions_2017 on predictions_2017.parcelid = properties_2017.parcelid
+where transactiondate between '2017-05-01' and '2017-06-31'
+and propertylandusetypeid in ('246','247','248','260','261','262','263','264',
+'265','266','267','268','269','270','271','273','274','275','276','279')
+        '''
+    df = pd.read_sql(sql_query, get_connection('zillow'))
+    df.to_csv('zillow')
+    return df
+
 def new_mall_data():
     '''
     this function reads the mall customer data from the codeup db into a df,
@@ -57,6 +73,12 @@ def get_iris_data():
         df = pd.read_sql('select * from measurements join species using (species_id);', get_connection('iris_db'))
         df.to_csv(filename)
         return df
+
+# Telco retrieval
+def reg_telco_cust():
+    df = pd.read_sql(get_connection('telco_churn'))
+    return df 
+
 
 def telco_cust():
     sql_query = '''
